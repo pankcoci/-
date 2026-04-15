@@ -1,25 +1,73 @@
-# Добавляем тестовые заказы за сегодняшнюю дату
-from datetime import date
+# После conn.commit() и до conn.close()
 
-today = date.today().isoformat()
+def execute_query(query, description):
+    cursor.execute(query)
+    results = cursor.fetchall()
+    print(f"\n{'='*50}")
+    print(f"{description}:")
+    print(f"{'='*50}")
+    if results:
+        for row in results:
+            print(row)
+    else:
+        print("(нет данных)")
+    return results
 
-# Добавляем нового пользователя
-cursor.execute("INSERT INTO users(name, email, password, phone) VALUES(?,?,?,?)", 
-               ("Тестовый", "test@mail.com", "test123", "999999"))
-new_user_id = cursor.lastrowid
+# 1. Заказы за сегодня (для тестовых данных используем 2025-01-27)
+print("\n🔍 ПРИМЕЧАНИЕ: В тестовых данных даты из января 2025 года")
+print("Для демонстрации используем дату 2025-01-27\n")
 
-# Добавляем заказ за сегодня
-cursor.execute("INSERT INTO orders(user_id, employee_id, order_date, status) VALUES(?,?,?,?)",
-               (new_user_id, 1, today, "processing"))
-new_order_id = cursor.lastrowid
+query1 = """
+SELECT 
+    o.id AS order_id,
+    u.name AS user_name,
+    u.email,
+    o.order_date,
+    o.status,
+    SUM(p.amount) AS total_amount
+FROM orders o
+JOIN users u ON o.user_id = u.id
+LEFT JOIN payments p ON o.id = p.order_id
+WHERE DATE(o.order_date) = DATE('2025-01-27')  -- Заменили на конкретную дату
+GROUP BY o.id, u.name, u.email, o.order_date, o.status
+"""
+execute_query(query1, "Заказы за 2025-01-27")
 
-# Добавляем товар в заказ
-cursor.execute("INSERT INTO order_items(order_id, product_id, quantity) VALUES(?,?,?)",
-               (new_order_id, 1, 2))
+# 2. Самый популярный товар месяца (январь 2025)
+query2 = """
+SELECT 
+    pr.id AS product_id,
+    pr.name AS product_name,
+    SUM(oi.quantity) AS total_quantity_sold,
+    COUNT(DISTINCT o.id) AS number_of_orders
+FROM products pr
+JOIN order_items oi ON pr.id = oi.product_id
+JOIN orders o ON oi.order_id = o.id
+WHERE o.order_date BETWEEN '2025-01-01' AND '2025-01-31'  -- Указали январь 2025
+GROUP BY pr.id, pr.name
+ORDER BY total_quantity_sold DESC
+LIMIT 1
+"""
+execute_query(query2, "Самый популярный товар за январь 2025")
 
-# Добавляем платеж
-cursor.execute("INSERT INTO payments(order_id, amount, payment_date, method) VALUES(?,?,?,?)",
-               (new_order_id, 2400, today, "card"))
+# 3. Поставщик с наибольшей суммой поставок в 2025 году
+query3 = """
+SELECT 
+    s.id AS supplier_id,
+    s.name AS supplier_name,
+    s.phone,
+    SUM(oi.quantity * pr.price) AS total_supply_amount,
+    COUNT(DISTINCT oi.order_id) AS number_of_orders
+FROM suppliers s
+JOIN products pr ON s.id = pr.supplier_id
+JOIN order_items oi ON pr.id = oi.product_id
+JOIN orders o ON oi.order_id = o.id
+WHERE strftime('%Y', o.order_date) = '2025'  -- Указали 2025 год
+GROUP BY s.id, s.name, s.phone
+ORDER BY total_supply_amount DESC
+LIMIT 1
+"""
+execute_query(query3, "Поставщик с наибольшей суммой поставок в 2025 году")
 
-conn.commit()
-print(f"\n✅ Добавлен тестовый заказ на сегодня ({today})")
+conn.close()
+print("\n✅ Запросы выполнены!")
