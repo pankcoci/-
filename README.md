@@ -1,147 +1,261 @@
 #include "colors.inc"
-#include "golds.inc"
+#include "textures.inc" 
+#include "but.pov"
+ camera {
+   location <1, 10, -35>
+   look_at <8, 6.5, 0>
+ }
 
-camera {
-  location <1, 10, -35>
-  look_at <8, 6.5, 0>
-  angle 45
+ light_source { <-3, 10, -3> White  }
+ light_source { <20, 10, -3> White  }
+ background{ NeonBlue}           //Öâåò ôîíà ,à òî÷íåå íåáà íà ðèñóíêå  
+ 
+ 
+ plane{ y,-10
+          pigment { checker Pink,Black scale 3 }
+ }
+ //Ïîñòðîåíèå ïàðàëëåëåïèïåäà. 
+#declare stool=union{
+ box { <0, 0, 0>,                //Íèæíèé áëèæíèé ëåâûé óãîë 
+      < 21, 0.5, 13>               //Äàëüíèé âåðõíèé ïðàâûé óãîë
+      texture {                  
+         pigment { color Gray35 } //color White -çàêðàñèòü â áåëûé öâåò 
+      }                          
+ }
+                                
 }
 
-background { color rgb<0.2, 0.4, 0.8> }
-light_source { <100, 100, -100> color rgb 1 }
-light_source { <-50, 100, -50> color rgb 0.5 }
+#declare skaf=union{
+ object{
+    stool
+ }
 
-plane {
-  y, 0
-  pigment { checker Pink, Black scale 3 }
+ object{
+    stool
+ translate<0,-9,0>
 }
 
-#macro Pump(offset_x)
+ object{
+    stool
+ translate<0,-4.5,0>
+}
 
-  // Ножка насоса
-  cylinder {
-    <0, 0.2, 0>, <0, 14, 0>, 0.12
-    pigment { color rgb<0.85, 0.85, 0.85> }
-    finish { reflection 0.3 specular 0.9 roughness 0.02 }
-    scale 0.35
-    translate <offset_x, 1, 9>
-  }
-
-  // Основание насоса
-  cylinder {
-    <0, 13.1, 0>, <0, 14.0, 0>, 0.65
-    pigment { color rgb<0.75, 0.75, 0.75> }
-    finish { reflection 0.3 specular 0.9 roughness 0.02 }
-    scale 0.35
-    translate <offset_x, 1, 9>
-  }
-
-  // Средняя часть
-  cylinder {
-    <0, 14.0, 0>, <0, 15.8, 0>, 0.45
-    pigment { color rgb<0.9, 0.9, 0.9> }
-    finish { reflection 0.3 specular 0.9 roughness 0.02 }
-    scale 0.35
-    translate <offset_x, 1, 9>
-  }
-
-  // Верхняя часть
-  cylinder {
-    <0, 15.8, 0>, <0, 16.3, 0>, 0.6
-    pigment { color rgb<0.95, 0.95, 0.95> }
-    finish { reflection 0.2 specular 0.8 roughness 0.03 }
-    scale 0.35
-    translate <offset_x, 1, 9>
-  }
-
-  // Головка насоса
-  sphere {
-    <0, 16.3, 0>, 0.6
-    scale <1, 0.45, 1>
-    pigment { color rgb<0.95, 0.95, 0.95> }
-    finish { reflection 0.2 specular 0.8 roughness 0.03 }
-    scale 0.35
-    translate <offset_x, 1, 9>
-  }
-
-  // Носик насоса (горизонтальная часть)
-  cylinder {
-    <0, 16.1, 0>, <1.1, 15.3, 0>, 0.18
-    pigment { color rgb<0.8, 0.8, 0.8> }
-    finish { reflection 0.3 specular 0.9 roughness 0.02 }
-    scale 0.35
-    translate <offset_x, 1, 9>
-  }
-
-  // Вертикальная часть носика
-  cylinder {
-    <1.1, 15.3, 0>, <1.1, 14.6, 0>, 0.15
-    pigment { color rgb<0.8, 0.8, 0.8> }
-    finish { reflection 0.3 specular 0.9 roughness 0.02 }
-    scale 0.35
-    translate <offset_x, 1, 9>
-  }
-
-#end
-
-#macro Bottle(offset_x, bottle_color)
-
-  // Внешняя стеклянная часть бутылки
-  sor {
-    13,
-    <0.0,  0.0>,
-    <1.2,   0.0>,
-    <1.4,   0.5>,
-    <1.6,   1.5>,
-    <1.6,   5.5>,
-    <1.5,   7.0>,
-    <1.2,  8.0>,
-    <0.9,  8.8>,
-    <0.75,  9.5>,
-    <0.75,  12.0>,
-    <0.8,  12.5>,
-    <0.7,  12.8>,
-    <0.0,  13.1>
-    open
-    texture {
-      pigment { color rgbt <1, 1, 1, 1> }
-      finish {
-        reflection { 0.15 }
-        specular 0.85
-        roughness 0.02
-      }
+ object{
+    stool
+    translate<0,18,0>
+}
+ object{
+    stool
+    translate<0,22,0>
+}
+                    
+} 
+ object{
+    skaf
+}
+#declare boc=union{
+    box { <0, 0, -0.1>,                //Íèæíèé áëèæíèé ëåâûé óãîë 
+          < 6.9, -10, -0.1>               //Äàëüíèé âåðõíèé ïðàâûé óãîë
+          texture {                  
+             pigment { wood } //color White -çàêðàñèòü â áåëûé öâåò 
+          }
     }
-    scale 0.35
-    translate <offset_x, 1, 9>
-  }
+}
 
-  // Внутренняя часть с жидкостью
-  sor {
-    8,
-    <0.0,  0.1>,
-    <1.08,   0.1>,
-    <1.29,   0.6>,
-    <1.49,   1.6>,
-    <1.49,   3.8>,
-    <1.39,   4.2>,
-    <1.0,  5.0>,
-    <0.0,  4.8>
-    open
-    texture {
-      pigment { color bottle_color filter 0.8 }
-      finish { diffuse 0.9 }
+object{
+    boc
+}
+object{
+    boc
+    translate<7,0,0>
+}
+
+object{
+    boc
+    translate<14,0,0>
+}
+
+//bok nis
+
+#declare boknis=union{
+ box { <0, 0, 0>,                //Íèæíèé áëèæíèé ëåâûé óãîë 
+      < 0,-10 , 13>               //Äàëüíèé âåðõíèé ïðàâûé óãîë
+      texture {                  
+         pigment { color Gray35 } //color White -çàêðàñèòü â áåëûé öâåò 
+      }                          
+ }
+                                
+}
+
+object{
+ boknis
+}
+object{
+ boknis
+ translate<21,0,0>
+}
+
+//stenka sadi
+
+box { <0, 22, 13>,                //Íèæíèé áëèæíèé ëåâûé óãîë 
+      < 21,-10 , 13>               //Äàëüíèé âåðõíèé ïðàâûé óãîë
+      texture {                  
+         pigment { wood } //color White -çàêðàñèòü â áåëûé öâåò 
+      }                          
+ } 
+ 
+// bok verh
+
+#declare bokverh=union{
+ box { <0, 18, 0>,                //Íèæíèé áëèæíèé ëåâûé óãîë 
+      < 0, 22 , 13>               //Äàëüíèé âåðõíèé ïðàâûé óãîë
+      texture {                  
+         pigment { color Gray35 } //color White -çàêðàñèòü â áåëûé öâåò 
+      }                          
+ }
+                                
+}
+
+object{
+ bokverh                            
+}
+object{
+ bokverh
+ translate<21,0,0>
+}
+
+// stenka verh pered
+
+box { <0, 18, 0>,                //Íèæíèé áëèæíèé ëåâûé óãîë 
+      < 21, 22 , 0>               //Äàëüíèé âåðõíèé ïðàâûé óãîë
+      texture {                  
+         pigment { color Gray35 } //color White -çàêðàñèòü â áåëûé öâåò 
+      }                          
+ } 
+ 
+// sredni ogroshdenie 
+
+box { <11, 0, 1.5>,                //Íèæíèé áëèæíèé ëåâûé óãîë 
+      < 14, 18 , 13>               //Äàëüíèé âåðõíèé ïðàâûé óãîë
+      texture {                  
+         pigment { color Gray35 } //color White -çàêðàñèòü â áåëûé öâåò 
+      }                          
+ } 
+
+
+ 
+// kvadrat nad avtomatom
+
+box { <14, 12, 1.5>,                //Íèæíèé áëèæíèé ëåâûé óãîë 
+      < 21, 18 , 13>               //Äàëüíèé âåðõíèé ïðàâûé óãîë
+      texture {                  
+         pigment { color Gray35 } //color White -çàêðàñèòü â áåëûé öâåò 
+      }                          
+ }
+ 
+// polki vse 
+
+box { <0, 0, 11>,                //Íèæíèé áëèæíèé ëåâûé óãîë 
+      < 0.4, 18 , 13>               //Äàëüíèé âåðõíèé ïðàâûé óãîë
+      texture {                  
+         pigment { color Gray35 } //color White -çàêðàñèòü â áåëûé öâåò 
+      }                          
+}
+#declare bo=union{ 
+box { <0.5, 0, 11>,                //Íèæíèé áëèæíèé ëåâûé óãîë 
+      <0.9 , 16 , 13>               //Äàëüíèé âåðõíèé ïðàâûé óãîë
+      texture {                  
+         pigment { color Gray35 } //color White -çàêðàñèòü â áåëûé öâåò 
+      }                          
     }
-    scale 0.35
-    translate <offset_x, 1, 9>
+}
+object{
+ bo                            
+}
+object{
+ bo
+ translate<10,0,0>
+}
+object{
+ bo
+ translate<5,0,0>
+}
+  
+#declare bov=union{
+box { <0.5, 15.6, 11>,                //Íèæíèé áëèæíèé ëåâûé óãîë 
+      <10.9 , 16 , 13>               //Äàëüíèé âåðõíèé ïðàâûé óãîë
+      texture {                  
+         pigment { color Gray35 } //color White -çàêðàñèòü â áåëûé öâåò 
+      }                          
+    }
+}
+object{
+ bov                            
+}
+object{
+ bov
+ translate<0,-15.1,0>
+} 
+object{
+ bov
+ translate<0,-6.5,0>
+}
+object{
+ bov
+ translate<0,-9,0>
+}
+
+#declare boz=union{ 
+box { <2.9, 0.2, 11>,                //Íèæíèé áëèæíèé ëåâûé óãîë 
+      <3.3 , 7 , 13>               //Äàëüíèé âåðõíèé ïðàâûé óãîë
+      texture {                  
+         pigment { color Gray35 } //color White -çàêðàñèòü â áåëûé öâåò 
+      }                          
+    }
+}
+object{
+ boz                            
+}
+object{
+ boz
+ translate<5,9,0>
+}
+object{
+ boz
+ translate<5,0,0>
+}
+object{
+ boz
+ translate<0,9,0>
+}   
+cylinder{<12.5, 13,2>,<12.5,  13, 1>, 1.1 pigment {Grey filter 0.2} finish{diffuse 1}}    //ýòî ãäå ëåæàò ñòàêàí÷èêè 
+cylinder{<12.5, 15.5,2>,<12.5,  15.5, 1>, 1.1 pigment {Grey}}  
+cylinder{<12.5, 13,1>,<12.5,  13, 0>, 0.6 pigment {Red}}
+cylinder{<12.5, 15.5,1>,<12.5,  15.5,0>, 0.6 pigment {Red}}      
+cylinder{<12.5, 13,1>,<12.5,  13, -0.2>, 0.4 pigment {White}}
+cylinder{<12.5, 15.5,1>,<12.5,  15.5,-0.2>, 0.4 pigment {White}} 
+cylinder{<14.7, -0.8,1>,<14.7, -0.8,-0.2>, 0.2 pigment {White}}  //ðó÷êè çàìîê    
+cylinder{<5.9, -0.8,1>,<5.9, -0.8,-0.2>, 0.2 pigment {White}}
+cylinder{<7.7, -0.8,1>,<7.7, -0.8,-0.2>, 0.2 pigment {White}}        
+
+sor {
+    12,
+    <1,  -0.1>,
+    <0.8,  1>,
+    <0.8,  2>,
+    <0.8,  2.5>,
+    <0.8,  3>,
+    <0.8,  3.5>,
+    <0.8, 3.6>,
+    <0.8, 3.8>,
+    <0.3, 5.9>,
+    <0.3, 6.4>,
+    <0.1, 7>,
+    <0.1, 7> 
+    open 
+    texture {Glass}
   }
 
-  // Добавляем насос
-  Pump(offset_x)
 
-#end
+    
 
-// Размещаем бутылки в диапазоне X от -0.1 до 6
-Bottle(-0.1, Yellow)
-Bottle(2.0,  Brown)
-Bottle(4.1,  Turquoise)
-Bottle(6.0,  Violet)
