@@ -2,8 +2,8 @@
 #include "golds.inc"
 
 camera {
- location <1, 10, -35>
-   look_at <8, 6.5, 0>
+  location <1, 10, -35>
+  look_at <8, 6.5, 0>
   angle 45
 }
 
@@ -13,74 +13,80 @@ light_source { <-50, 100, -50> color rgb 0.5 }
 
 plane {
   y, 0
-  pigment { checker Pink,Black scale 3 }
+  pigment { checker Pink, Black scale 3 }
 }
-
 
 #macro Pump(offset_x)
 
-
+  // Ножка насоса
   cylinder {
     <0, 0.2, 0>, <0, 14, 0>, 0.12
     pigment { color rgb<0.85, 0.85, 0.85> }
     finish { reflection 0.3 specular 0.9 roughness 0.02 }
-    translate <offset_x, 0, 0>
+    scale 0.35
+    translate <offset_x, 1, 9>
   }
 
-
+  // Основание насоса
   cylinder {
     <0, 13.1, 0>, <0, 14.0, 0>, 0.65
     pigment { color rgb<0.75, 0.75, 0.75> }
     finish { reflection 0.3 specular 0.9 roughness 0.02 }
-    translate <offset_x, 0, 0>
+    scale 0.35
+    translate <offset_x, 1, 9>
   }
 
-
+  // Средняя часть
   cylinder {
     <0, 14.0, 0>, <0, 15.8, 0>, 0.45
     pigment { color rgb<0.9, 0.9, 0.9> }
     finish { reflection 0.3 specular 0.9 roughness 0.02 }
-    translate <offset_x, 0, 0>
+    scale 0.35
+    translate <offset_x, 1, 9>
   }
 
-
+  // Верхняя часть
   cylinder {
     <0, 15.8, 0>, <0, 16.3, 0>, 0.6
     pigment { color rgb<0.95, 0.95, 0.95> }
     finish { reflection 0.2 specular 0.8 roughness 0.03 }
-    translate <offset_x, 0, 0>
+    scale 0.35
+    translate <offset_x, 1, 9>
   }
 
-  
+  // Головка насоса
   sphere {
     <0, 16.3, 0>, 0.6
     scale <1, 0.45, 1>
     pigment { color rgb<0.95, 0.95, 0.95> }
     finish { reflection 0.2 specular 0.8 roughness 0.03 }
-    translate <offset_x, 0, 0>
+    scale 0.35
+    translate <offset_x, 1, 9>
   }
 
-
+  // Носик насоса (горизонтальная часть)
   cylinder {
     <0, 16.1, 0>, <1.1, 15.3, 0>, 0.18
     pigment { color rgb<0.8, 0.8, 0.8> }
     finish { reflection 0.3 specular 0.9 roughness 0.02 }
-    translate <offset_x, 0, 0>
+    scale 0.35
+    translate <offset_x, 1, 9>
   }
 
- 
+  // Вертикальная часть носика
   cylinder {
     <1.1, 15.3, 0>, <1.1, 14.6, 0>, 0.15
     pigment { color rgb<0.8, 0.8, 0.8> }
     finish { reflection 0.3 specular 0.9 roughness 0.02 }
-    translate <offset_x, 0, 0>
+    scale 0.35
+    translate <offset_x, 1, 9>
   }
 
 #end
 
-
 #macro Bottle(offset_x, bottle_color)
 
+  // Внешняя стеклянная часть бутылки
   sor {
     13,
     <0.0,  0.0>,
@@ -105,9 +111,11 @@ plane {
         roughness 0.02
       }
     }
-    translate <offset_x, 0, 0>
+    scale 0.35
+    translate <offset_x, 1, 9>
   }
 
+  // Внутренняя часть с жидкостью
   sor {
     8,
     <0.0,  0.1>,
@@ -123,15 +131,17 @@ plane {
       pigment { color bottle_color filter 0.8 }
       finish { diffuse 0.9 }
     }
-    translate <offset_x, 0, 0>
+    scale 0.35
+    translate <offset_x, 1, 9>
   }
 
+  // Добавляем насос
   Pump(offset_x)
 
 #end
 
-
-Bottle(0,  Yellow)
-Bottle(5,  Brown)
-Bottle(10, Turquoise)
-Bottle(15, Violet)
+// Размещаем бутылки в диапазоне X от -0.1 до 6
+Bottle(-0.1, Yellow)
+Bottle(2.0,  Brown)
+Bottle(4.1,  Turquoise)
+Bottle(6.0,  Violet)
